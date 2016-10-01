@@ -39,6 +39,9 @@ public class Entity implements EntityContainer, PhysicalObject {
 			// Set the owner to us.
 			comp.entity = this;
 			
+			// Now create it!
+			comp.awake();
+			
 			this.components.add(comp);
 			return comp;
 			
@@ -135,6 +138,15 @@ public class Entity implements EntityContainer, PhysicalObject {
 	@Override
 	public List<Entity> getChildren() {
 		return new ArrayList<>(this.children);
+	}
+	
+	/**
+	 * Returns a list of all of the components on this entity.
+	 * 
+	 * @return The components.
+	 */
+	public List<Component> getComponents() {
+		return new ArrayList<>(this.components);
 	}
 	
 	@Override

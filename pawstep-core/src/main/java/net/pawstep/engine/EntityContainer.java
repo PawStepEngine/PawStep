@@ -1,6 +1,7 @@
 package net.pawstep.engine;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Any kind of object that can contain entites.
@@ -88,6 +89,25 @@ public interface EntityContainer {
 	 */
 	public default boolean removeChild(Entity ent) {
 		return this.removeChild(ent.name);
+	}
+	
+	/**
+	 * Invokes the action for each component on all entity in the container.
+	 * 
+	 * @param action The action to conduct.
+	 */
+	public default void forEachComponent(Consumer<Component> action) {
+		
+		for (Entity ent : this.getChildren()) {
+			
+			for (Component comp : ent.getComponents()) {
+				action.accept(comp);
+			}
+			
+			ent.forEachComponent(action);
+			
+		}
+		
 	}
 	
 	/**

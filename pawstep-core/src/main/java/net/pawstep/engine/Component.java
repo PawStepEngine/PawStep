@@ -13,13 +13,20 @@ public class Component {
 	private boolean enabled;
 	
 	/**
-	 * Sets the activation state of this component.  If it is set to false it
-	 * will no longer receive the majority of event calls to it.
+	 * Sets the activation state of this component.  This only applied in the
+	 * next frame.  If it is set to false it will no longer receive the
+	 * majority of event calls to it.
 	 * 
 	 * @param state The state to set.
 	 */
 	public void setState(boolean state) {
+		
+		// Call the relevant event functions.
+		if (!this.enabled && state) this.onEnable();
+		if (this.enabled && !state) this.onDisable();
+		
 		this.enabled = state;
+		
 	}
 	
 	/**
