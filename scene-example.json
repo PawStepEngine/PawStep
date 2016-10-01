@@ -1,0 +1,27 @@
+{
+  "name": "A",
+  "transform": {
+    "pos": [1, 2, 3],
+    "rot": [0, 0, 0],
+    "scale": [1, 1, 1]
+  },
+  "components": [
+    {
+      "_type": "camera",
+      "enabled": true,
+      "fovX": 90,
+      "fovY": 90,
+      "near": 0.03,
+      "far": 1000
+    }
+  ],
+  "children": [
+    {
+      "name": "B",
+      "transform": {},
+      "components": [],
+      "children": []
+    }
+  ]
+}
+
