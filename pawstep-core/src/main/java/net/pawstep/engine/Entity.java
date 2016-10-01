@@ -166,7 +166,7 @@ public class Entity implements EntityContainer, PhysicalObject {
 		this.children.forEach(c -> c.setScene(s));
 		
 	}
-
+	
 	protected void setContainer(EntityContainer container) {
 		
 		// Check to see if we need to update scene information.
@@ -200,7 +200,7 @@ public class Entity implements EntityContainer, PhysicalObject {
 		return e;
 		
 	}
-
+	
 	@Override
 	public Scene getScene() {
 		return this.scene;

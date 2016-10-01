@@ -17,7 +17,7 @@ public class Scene implements EntityContainer, PhysicalObject {
 	public List<Entity> getChildren() {
 		return new ArrayList<>(this.entities);
 	}
-
+	
 	@Override
 	public Entity newEntity(String name) {
 		
@@ -52,7 +52,7 @@ public class Scene implements EntityContainer, PhysicalObject {
 		return count > 0;
 		
 	}
-
+	
 	@Override
 	public Scene getScene() {
 		return this; // lol
