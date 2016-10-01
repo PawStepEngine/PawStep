@@ -41,4 +41,114 @@ public class Component {
 		
 	}
 	
+	/**
+	 * Gets the entity that this component is bound to.
+	 * 
+	 * @return This component's entity.
+	 */
+	public Entity getEntity() {
+		return this.entity;
+	}
+	
+	/**
+	 * Get the scene that this component is ultimately in.
+	 * 
+	 * @return This component's scene.
+	 */
+	public Scene getScene() {
+		return this.getEntity().getScene();
+	}
+	
+	/*
+	 * ================================================================
+	 * B'YOND HERE LIES THEE FETID CONGLOMERATE OF FALLOW EVENT METHODS
+	 * ================================================================
+	 */
+	
+	/**
+	 * Called when the component is constructed.
+	 */
+	public void awake() {
+		
+	}
+	
+	/**
+	 * Called when the component starts for the first time.
+	 */
+	public void start() {
+		
+	}
+	
+	/**
+	 * Called once every frame at the beginning of the frame as long as the
+	 * component is enabled.
+	 */
+	public void update() {
+		
+	}
+	
+	/**
+	 * Called once every frame at the beginning of the frame as long as the
+	 * component is enabled.
+	 */
+	public void lateUpdate() {
+		
+	}
+	
+	/**
+	 * Called when the component state goes from disabled to enabled.
+	 */
+	public void onEnable() {
+		
+	}
+	
+	/**
+	 * Called when the component state goes from enabled to disabled.
+	 */
+	public void onDisable() {
+		
+	}
+	
+	/**
+	 * Called when the entity that this component is on is destroyed.
+	 */
+	public void onDestroy() {
+		
+	}
+	
+	/**
+	 * Called when the component is removed from an entity.
+	 */
+	public void onRemove() {
+		
+	}
+	
+	/**
+	 * Called before the scene is rendered.
+	 */
+	public void onPreRender() {
+		
+	}
+	
+	/**
+	 * Called after the scene is rendered.
+	 */
+	public void onPostRender() {
+		
+	}
+	
+	/**
+	 * Called before the entity the component is on is rendered.
+	 */
+	public void onPreRenderObject() {
+		
+	}
+	
+	/**
+	 * Called after the entity the component is on is rendered.
+	 */
+	public void onPostRenderObject() {
+		
+	}
+	
 }
