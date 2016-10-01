@@ -10,6 +10,7 @@
 	
 	<modules>
 		<module>pawstep-core</module>
+		<module>pawstep-json-loader</module>
 	</modules>
 	
 	<properties>
