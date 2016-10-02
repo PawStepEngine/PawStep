@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.lwjgl.Sys;
+
 import net.pawstep.engine.hierarchy.Component;
 import net.pawstep.engine.hierarchy.SceneManager;
 import net.pawstep.engine.render.OglDisplay;
@@ -43,7 +45,7 @@ public class LoopManager {
 			this.display.update();
 			step1 = System.nanoTime() - step1;
 			
-			if (Math.random() < 0.001F) {
+			if (Math.random() < 0.01F) {
 				
 				System.out.println(
 					"logic:   " + step0 + " ns\n" +
@@ -52,6 +54,8 @@ public class LoopManager {
 				);
 				
 			}
+			
+			this.display.sync();
 			
 		}
 		

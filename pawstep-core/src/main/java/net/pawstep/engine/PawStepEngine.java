@@ -61,6 +61,7 @@ public class PawStepEngine {
 		
 		engine = new PawStepEngine(cfg);
 		queuedComponentRegistrations.forEach(c -> engine.getComponentManager().registerComponentType(c));
+		queuedComponentRegistrations = null;
 		
 		// Set up the initial scene.
 		cfg.getSceneProvider().populateInitialScene(engine.getSceneManager().getActiveScene());

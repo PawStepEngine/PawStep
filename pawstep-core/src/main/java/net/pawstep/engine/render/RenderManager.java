@@ -3,6 +3,7 @@ package net.pawstep.engine.render;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
 
 import net.pawstep.engine.PawStepEngine;
@@ -63,17 +64,23 @@ public class RenderManager {
 		Matrix4f liveMatrix = this.getCameraToWorldMatrix();
 		
 		// Setup OpenGL.
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
-		// Push the matrix.
-		GL11.glPushMatrix();
+		// Set up projection stuff.
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GLU.gluPerspective(60F, (640F / 480F), 0.01F, 50F);
 		
-		// Cam -> World, convert our coordinates into world space.
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
 		liveMatrix.store(this.liveBuffer);
 		this.liveBuffer.rewind();
 		GL11.glMultMatrix(this.liveBuffer);
+		
+		GL11.glColor3f(1F, 1F, 1F);
+		
+		// Push the matrix.
+		GL11.glPushMatrix();
 		
 		// Now render each of the objects.
 		this.getScene().getChildren().forEach(e -> renderEntity(liveMatrix, this.liveBuffer, e));
@@ -92,7 +99,10 @@ public class RenderManager {
 		GL11.glPushMatrix();
 		GL11.glMultMatrix(fb);
 		
-		// TODO Actually render it.
+		// Now actually draw it.
+		ent.getComponents().forEach(c -> {
+			if (c instanceof Renderer) ((Renderer) c).draw(); // Probably bad performance.
+		});
 		
 		// Now do the children.
 		ent.getChildren().forEach(e -> renderEntity(matrix, fb, ent));
@@ -110,7 +120,7 @@ public class RenderManager {
 			Matrix4f.mul(mat, e.getTransform().getTransformationMatrix(), mat);
 		});
 		
-		return (Matrix4f) mat.invert(); // Why casting?
+		return mat;
 		
 	}
 	

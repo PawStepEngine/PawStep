@@ -36,6 +36,10 @@ public class OglDisplay {
 		Display.destroy();
 	}
 	
+	public void sync() {
+		Display.sync(60);
+	}
+	
 	public boolean isCloseRequested() {
 		return Display.isCloseRequested();
 	}

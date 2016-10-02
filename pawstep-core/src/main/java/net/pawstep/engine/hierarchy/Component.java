@@ -93,6 +93,15 @@ public class Component {
 		return this.enabled;
 	}
 	
+	/**
+	 * Gets the transform for the object that this component is attached onto.
+	 * 
+	 * @return The transform.
+	 */
+	public Transform getTransform() {
+		return this.getEntity().getTransform();
+	}
+	
 	/*
 	 * ================================================================
 	 * B'YOND HERE LIES THEE FETID CONGLOMERATE OF FALLOW EVENT METHODS
