@@ -1,8 +1,8 @@
 package net.pawstep.engine.render;
 
-import net.pawstep.engine.Component;
 import net.pawstep.engine.PawStepEngine;
 import net.pawstep.engine.components.ComponentType;
+import net.pawstep.engine.hierarchy.Component;
 
 @ComponentType(name = "camera")
 public class Camera extends Component {

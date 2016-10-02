@@ -2,7 +2,7 @@ package net.pawstep.engine.components;
 
 import java.util.Map;
 
-import net.pawstep.engine.Component;
+import net.pawstep.engine.hierarchy.Component;
 
 public class ComponentManager {
 	

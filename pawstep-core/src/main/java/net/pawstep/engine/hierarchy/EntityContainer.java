@@ -1,4 +1,4 @@
-package net.pawstep.engine;
+package net.pawstep.engine.hierarchy;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -91,6 +91,22 @@ public interface EntityContainer {
 		return this.removeChild(ent.name);
 	}
 	
+	public default void forEachChild(Consumer<Entity> action) {
+		
+		this.getChildren().forEach(e -> {
+			
+			try {
+				action.accept(e);
+			} catch (Throwable t) {
+				// TODO Error handling.
+			}
+			
+			e.forEachChild(action);
+			
+		});
+		
+	}
+	
 	/**
 	 * Invokes the action for each component on all entity in the container.
 	 * 
@@ -98,15 +114,9 @@ public interface EntityContainer {
 	 */
 	public default void forEachComponent(Consumer<Component> action) {
 		
-		for (Entity ent : this.getChildren()) {
-			
-			for (Component comp : ent.getComponents()) {
-				action.accept(comp);
-			}
-			
-			ent.forEachComponent(action);
-			
-		}
+		this.forEachChild(e -> {
+			e.getComponents().forEach(c -> action.accept(c));
+		});
 		
 	}
 	

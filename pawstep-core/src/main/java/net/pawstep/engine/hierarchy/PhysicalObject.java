@@ -1,4 +1,4 @@
-package net.pawstep.engine;
+package net.pawstep.engine.hierarchy;
 
 public interface PhysicalObject {
 	

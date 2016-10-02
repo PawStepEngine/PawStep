@@ -1,6 +1,7 @@
-package net.pawstep.engine;
+package net.pawstep.engine.hierarchy;
 
 import net.pawstep.engine.components.ComponentType;
+import net.pawstep.engine.loop.LoopManager;
 
 /**
  * A unit of behavior logic for controlling entities.
@@ -21,12 +22,29 @@ public class Component {
 	 */
 	public void setState(boolean state) {
 		
-		// Call the relevant event functions.
-		if (!this.enabled && state) this.onEnable();
-		if (this.enabled && !state) this.onDisable();
+		LoopManager lm = this.getScene().getManager().getLoopManager();
+		lm.queuePostFrameAction(() -> {
+
+			// Call the relevant event functions.
+			if (!this.enabled && state) this.onEnable();
+			if (this.enabled && !state) this.onDisable();
+			
+			// Then actually set it.
+			this.setStateImmediate(state);
+			
+		});
 		
+	}
+	
+	/**
+	 * Sets the activation state of this component immediately.  Does not call
+	 * any event handlers and may adversely effect the logic of other
+	 * components down the line.
+	 * 
+	 * @param state The state to set.
+	 */
+	public void setStateImmediate(boolean state) {
 		this.enabled = state;
-		
 	}
 	
 	/**
@@ -64,6 +82,15 @@ public class Component {
 	 */
 	public Scene getScene() {
 		return this.getEntity().getScene();
+	}
+	
+	/**
+	 * Gets the activation state of this component.
+	 * 
+	 * @return The activation state.
+	 */
+	public boolean isEnabled() {
+		return this.enabled;
 	}
 	
 	/*

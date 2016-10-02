@@ -1,4 +1,4 @@
-package net.pawstep.engine;
+package net.pawstep.engine.hierarchy;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,15 +11,25 @@ import java.util.List;
  */
 public class Entity implements EntityContainer, PhysicalObject {
 	
-	protected transient Scene scene;
 	protected transient EntityContainer parent;
 	protected String name;
 	
-	private List<Entity> children;
-	private List<Component> components;
+	protected Transform transform = new Transform();
+	
+	private List<Entity> children = new ArrayList<>();
+	private List<Component> components = new ArrayList<>();
 	
 	protected Entity(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * Gets this object's transform.
+	 * 
+	 * @return The transform.
+	 */
+	public Transform getTransform() {
+		return this.transform;
 	}
 	
 	/**
@@ -39,7 +49,7 @@ public class Entity implements EntityContainer, PhysicalObject {
 			// Set the owner to us.
 			comp.entity = this;
 			
-			// Now create it!
+			// Now awaken it!
 			comp.awake();
 			
 			this.components.add(comp);
@@ -172,24 +182,8 @@ public class Entity implements EntityContainer, PhysicalObject {
 		
 	}
 	
-	protected void setScene(Scene s) {
-		
-		this.scene = s;
-		this.children.forEach(c -> c.setScene(s));
-		
-	}
-	
 	protected void setContainer(EntityContainer container) {
-		
-		// Check to see if we need to update scene information.
-		if (container instanceof Scene) {
-			this.setScene((Scene) container);
-		} else if (container instanceof Entity) {
-			this.setScene(((Entity) container).scene);
-		}
-		
-		this.parent = container;
-		
+		this.parent = container;		
 	}
 	
 	/**
@@ -215,7 +209,7 @@ public class Entity implements EntityContainer, PhysicalObject {
 	
 	@Override
 	public Scene getScene() {
-		return this.scene;
+		return this.parent instanceof Scene ? (Scene) this.parent : ((Entity) this.parent).getScene();
 	}
 	
 }

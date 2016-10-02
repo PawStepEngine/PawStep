@@ -1,4 +1,4 @@
-package net.pawstep.engine;
+package net.pawstep.engine.hierarchy;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,7 +11,14 @@ import java.util.List;
  */
 public class Scene implements EntityContainer, PhysicalObject {
 	
+	private final SceneManager manager;
+	protected boolean activated = false;
+	
 	private List<Entity> entities;
+	
+	public Scene(SceneManager man) {
+		this.manager = man;
+	}
 	
 	@Override
 	public List<Entity> getChildren() {
@@ -56,6 +63,15 @@ public class Scene implements EntityContainer, PhysicalObject {
 	@Override
 	public Scene getScene() {
 		return this; // lol
+	}
+	
+	/**
+	 * Gets this scene's manager.
+	 * 
+	 * @return The scene manager.
+	 */
+	public SceneManager getManager() {
+		return this.manager;
 	}
 	
 }
