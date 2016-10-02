@@ -30,12 +30,28 @@ public class LoopManager {
 	
 	public void startLoop() {
 		
-		this.display.init();
 		this.sceneManager.activateScene();
+		this.display.init();
 		
-		while (!this.terminateRequested || this.display.isCloseRequested()) {
+		while (!this.terminateRequested && !this.display.isCloseRequested()) {
 			
+			long step0 = System.nanoTime();
 			this.gameStep();
+			step0 = System.nanoTime() - step0;
+			
+			long step1 = System.nanoTime();
+			this.display.update();
+			step1 = System.nanoTime() - step1;
+			
+			if (Math.random() < 0.001F) {
+				
+				System.out.println(
+					"logic:   " + step0 + " ns\n" +
+					"render:  " + step1 + " ns\n" +
+					"======="
+				);
+				
+			}
 			
 		}
 		
@@ -60,8 +76,6 @@ public class LoopManager {
 			if (c.isEnabled()) c.lateUpdate();
 		});
 		
-		this.display.update();
-
 	}
 	
 	private void forEachComponent(Consumer<Component> callback) {

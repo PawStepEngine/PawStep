@@ -2,6 +2,9 @@ package net.pawstep.engine.hierarchy;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+
+import net.pawstep.engine.PawStepEngine;
 
 /**
  * Any kind of object that can contain entites.
@@ -98,7 +101,7 @@ public interface EntityContainer {
 			try {
 				action.accept(e);
 			} catch (Throwable t) {
-				// TODO Error handling.
+				PawStepEngine.getLogger().log(Level.WARNING, "Problem on " + e.name, t);
 			}
 			
 			e.forEachChild(action);

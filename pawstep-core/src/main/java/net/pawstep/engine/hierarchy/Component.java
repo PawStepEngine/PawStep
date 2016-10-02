@@ -11,7 +11,7 @@ import net.pawstep.engine.loop.LoopManager;
 public class Component {
 	
 	protected transient Entity entity;
-	private boolean enabled;
+	private boolean enabled = true;
 	
 	/**
 	 * Sets the activation state of this component.  This only applied in the

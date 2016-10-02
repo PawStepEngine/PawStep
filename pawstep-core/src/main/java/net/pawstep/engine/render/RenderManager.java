@@ -1,20 +1,22 @@
 package net.pawstep.engine.render;
 
 import java.nio.FloatBuffer;
-import java.util.List;
-
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 
-import net.pawstep.engine.hierarchy.Component;
+import net.pawstep.engine.PawStepEngine;
+import net.pawstep.engine.hierarchy.Entity;
 import net.pawstep.engine.hierarchy.Scene;
 
 public class RenderManager {
 	
 	private Camera mainCamera;
 	
+	private transient FloatBuffer liveBuffer;
+	
 	public RenderManager() {
-		
+		this.liveBuffer = BufferUtils.createFloatBuffer(32);
 	}
 	
 	/**
@@ -40,43 +42,62 @@ public class RenderManager {
 	 */
 	public void renderScene() {
 		
+		if (this.getMainCamera() == null) {
+			
+			PawStepEngine.getLogger().warning("No camera is registered as main!");
+			
+			try {
+				
+				// So it's obvious something's wrong!
+				Thread.sleep(250L);
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			return;
+			
+		}
+		
+		// Sadly can't really find a way to make this reusable across calls.
 		Matrix4f liveMatrix = this.getCameraToWorldMatrix();
-		FloatBuffer fb = FloatBuffer.allocate(16);
+		
+		// Setup OpenGL.
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
 		// Push the matrix.
 		GL11.glPushMatrix();
 		
 		// Cam -> World, convert our coordinates into world space.
-		liveMatrix.store(fb);
-		GL11.glMultMatrix(fb);
+		liveMatrix.store(this.liveBuffer);
+		this.liveBuffer.rewind();
+		GL11.glMultMatrix(this.liveBuffer);
 		
-		/*this.getScene().forEachChild(e -> {
-			
-			/*
-			 * FIXME Change the depth-first thing to actually recursively push the matrix stack.
-			 * FIXME Change the depth-first thing to actually recursively push the matrix stack.
-			 * FIXME Change the depth-first thing to actually recursively push the matrix stack.
-			 * FIXME You're an idiot, Trey.
-			 *
-			
-			// Transform the the coordinates of the model.
-			e.getTransform().applyToTransformationMatrix(liveMatrix);
-			liveMatrix.store(fb);
-			GL11.glPushMatrix();
-			GL11.glMultMatrix(fb);
-			
-			// Render the thing.
-			List<Component> comps = e.getComponents();
-			comps.forEach(c -> c.onPreRenderObject());
-			// TODO Actually render it, somehow.
-			comps.forEach(c -> c.onPostRenderObject());
-			
-			// Go back to the child things.
-			GL11.glPopMatrix();
-			
-		});*/
+		// Now render each of the objects.
+		this.getScene().getChildren().forEach(e -> renderEntity(liveMatrix, this.liveBuffer, e));
 		
 		// Go back into camera space.
+		GL11.glPopMatrix();
+		
+	}
+	
+	private void renderEntity(Matrix4f matrix, FloatBuffer fb, Entity ent) {
+		
+		// Apply transformation.
+		ent.getTransform().applyToTransformationMatrix(matrix);
+		fb.rewind();
+		matrix.store(fb);
+		GL11.glPushMatrix();
+		GL11.glMultMatrix(fb);
+		
+		// TODO Actually render it.
+		
+		// Now do the children.
+		ent.getChildren().forEach(e -> renderEntity(matrix, fb, ent));
+		
+		// Restore matrix.
 		GL11.glPopMatrix();
 		
 	}

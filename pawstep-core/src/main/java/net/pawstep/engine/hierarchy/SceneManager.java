@@ -1,5 +1,8 @@
 package net.pawstep.engine.hierarchy;
 
+import java.util.logging.Logger;
+
+import net.pawstep.engine.PawStepEngine;
 import net.pawstep.engine.loop.LoopManager;
 
 public class SceneManager {
@@ -13,8 +16,12 @@ public class SceneManager {
 	
 	public void activateScene() {
 		
+		Logger log = PawStepEngine.getLogger();
+		log.info("Starting components... (" + this.activeScene.getChildren().size() + ")");
+		
 		this.activeScene.forEachComponent(c -> {
 			
+			PawStepEngine.getLogger().info("Starting " + c.getName() + " on " + c.getName() + "...");
 			c.start();
 			
 		});

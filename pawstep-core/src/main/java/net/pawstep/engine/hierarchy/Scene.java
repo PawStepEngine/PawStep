@@ -33,6 +33,8 @@ public class Scene implements EntityContainer, PhysicalObject {
 		Entity e = new Entity(name);
 		e.setContainer(this);
 		
+		this.entities.add(e); // lol I forgot this forever and spent >30 minutes debugging it
+		
 		return e;
 		
 	}

@@ -45,6 +45,8 @@ public class Entity implements EntityContainer, PhysicalObject {
 		
 		if (this.hasComponent(component)) throw new IllegalArgumentException("Entity already has component of that type!");
 		
+		PawStepEngine.getLogger().info("Attaching " + component.getName() + " onto " + this.name + "...");
+		
 		try {
 			
 			T comp = component.newInstance();
@@ -53,11 +55,7 @@ public class Entity implements EntityContainer, PhysicalObject {
 			comp.entity = this;
 			
 			// Now awaken it!
-			try {
-				comp.awake();
-			} catch (Throwable t) {
-				PawStepEngine.getLogger().log(Level.WARNING, "Problem awakening component " + component.getName(), t);
-			}
+			comp.awake();
 			
 			this.components.add(comp);
 			return comp;

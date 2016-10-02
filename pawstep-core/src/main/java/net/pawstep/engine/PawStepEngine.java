@@ -29,10 +29,8 @@ public class PawStepEngine {
 		this.componentManager = new ComponentManager();
 		this.display = new OglDisplay(cfg.getWindowWidth(), cfg.getWindowHeight());
 		
-		// Set up the scene.
+		// Set up managers.
 		this.sceneManager = new SceneManager();
-		cfg.getSceneProvider().populateInitialScene(this.sceneManager.getActiveScene());
-		
 		this.renderManager = new RenderManager();
 		
 		this.loopManager = new LoopManager(this.sceneManager, this.renderManager, this.display);
@@ -63,6 +61,9 @@ public class PawStepEngine {
 		
 		engine = new PawStepEngine(cfg);
 		queuedComponentRegistrations.forEach(c -> engine.getComponentManager().registerComponentType(c));
+		
+		// Set up the initial scene.
+		cfg.getSceneProvider().populateInitialScene(engine.getSceneManager().getActiveScene());
 		
 		return getEngine();
 		
