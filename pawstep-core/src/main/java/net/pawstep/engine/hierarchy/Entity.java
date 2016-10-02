@@ -190,6 +190,10 @@ public class Entity implements EntityContainer, PhysicalObject {
 		this.parent = container;		
 	}
 	
+	public EntityContainer getContainer() {
+		return this.parent;
+	}
+	
 	/**
 	 * Gets this entity's parent if the parent is an entity.
 	 * 
@@ -206,6 +210,7 @@ public class Entity implements EntityContainer, PhysicalObject {
 		
 		Entity e = new Entity(name);
 		e.setContainer(this);
+		this.children.add(e); // lol I fixed this faster this time, but I still forgot it for a while
 		
 		return e;
 		

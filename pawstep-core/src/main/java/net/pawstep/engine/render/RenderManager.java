@@ -1,6 +1,7 @@
 package net.pawstep.engine.render;
 
 import java.nio.FloatBuffer;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -83,29 +84,30 @@ public class RenderManager {
 		GL11.glPushMatrix();
 		
 		// Now render each of the objects.
-		this.getScene().getChildren().forEach(e -> renderEntity(liveMatrix, this.liveBuffer, e));
+		this.getScene().getChildren().forEach(e -> renderEntity(liveMatrix, e));
 		
 		// Go back into camera space.
 		GL11.glPopMatrix();
 		
 	}
 	
-	private void renderEntity(Matrix4f matrix, FloatBuffer fb, Entity ent) {
+	private void renderEntity(Matrix4f matrix, Entity ent) {
+		
+		GL11.glPushMatrix();
 		
 		// Apply transformation.
 		ent.getTransform().applyToTransformationMatrix(matrix);
-		fb.rewind();
-		matrix.store(fb);
-		GL11.glPushMatrix();
-		GL11.glMultMatrix(fb);
+		matrix.store(this.liveBuffer);
+		this.liveBuffer.rewind();
+		GL11.glMultMatrix(this.liveBuffer);
+		
+		// Now do the children.
+		ent.getChildren().forEach(e -> renderEntity(matrix, e));
 		
 		// Now actually draw it.
 		ent.getComponents().forEach(c -> {
 			if (c instanceof Renderer) ((Renderer) c).draw(); // Probably bad performance.
 		});
-		
-		// Now do the children.
-		ent.getChildren().forEach(e -> renderEntity(matrix, fb, ent));
 		
 		// Restore matrix.
 		GL11.glPopMatrix();
@@ -115,10 +117,14 @@ public class RenderManager {
 	private Matrix4f getCameraToWorldMatrix() {
 		
 		Matrix4f mat = new Matrix4f();
+		Entity ent = this.getMainCamera().getEntity();
 		
-		this.getScene().forEachChild(e -> {
-			Matrix4f.mul(mat, e.getTransform().getTransformationMatrix(), mat);
-		});
+		while (ent != null) {
+			
+			Matrix4f.mul(mat, ent.getTransform().getTransformationMatrix(), mat);
+			ent = ent.getParentEntity();
+			
+		}
 		
 		return mat;
 		
