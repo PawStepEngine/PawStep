@@ -70,7 +70,7 @@ public class RenderManager {
 		// Set up projection stuff.
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GLU.gluPerspective(60F, (640F / 480F), 0.01F, 50F);
+		GLU.gluPerspective(75F, (640F / 480F), 0.01F, 50F);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
@@ -121,7 +121,7 @@ public class RenderManager {
 		
 		while (ent != null) {
 			
-			Matrix4f.mul(mat, ent.getTransform().getTransformationMatrix(), mat);
+			Matrix4f.mul((Matrix4f) ent.getTransform().getTransformationMatrix(), mat, mat);
 			ent = ent.getParentEntity();
 			
 		}

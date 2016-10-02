@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.lwjgl.Sys;
-
 import net.pawstep.engine.hierarchy.Component;
 import net.pawstep.engine.hierarchy.SceneManager;
 import net.pawstep.engine.render.OglDisplay;
