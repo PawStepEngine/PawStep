@@ -19,4 +19,8 @@ public class Camera extends Component {
 		this.renderManager.setMainCamera(this);
 	}
 	
+	static {
+		PawStepEngine.registerComponentType(Camera.class);
+	}
+	
 }

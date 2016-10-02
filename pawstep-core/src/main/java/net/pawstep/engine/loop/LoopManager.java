@@ -31,6 +31,7 @@ public class LoopManager {
 	public void startLoop() {
 		
 		this.display.init();
+		this.sceneManager.activateScene();
 		
 		while (!this.terminateRequested || this.display.isCloseRequested()) {
 			
@@ -51,7 +52,7 @@ public class LoopManager {
 		
 		// Prerenders.
 		this.forEachComponent(c -> c.onPreRender());
-		this.renderManager.renderScene();
+		// TODO this.renderManager.renderScene();
 		this.forEachComponent(c -> c.onPostRender());
 		
 		// Last step.

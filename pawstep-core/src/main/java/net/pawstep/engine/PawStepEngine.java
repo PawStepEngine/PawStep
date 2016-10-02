@@ -1,6 +1,7 @@
 package net.pawstep.engine;
 
 import net.pawstep.engine.components.ComponentManager;
+import net.pawstep.engine.hierarchy.Component;
 import net.pawstep.engine.hierarchy.SceneManager;
 import net.pawstep.engine.loop.LoopManager;
 import net.pawstep.engine.render.OglDisplay;
@@ -22,7 +23,10 @@ public class PawStepEngine {
 		this.componentManager = new ComponentManager();
 		this.display = new OglDisplay(cfg.getWindowWidth(), cfg.getWindowHeight());
 		
+		// Set up the scene.
 		this.sceneManager = new SceneManager();
+		cfg.getSceneProvider().populateInitialScene(this.sceneManager.getActiveScene());
+		
 		this.renderManager = new RenderManager();
 		
 		this.loopManager = new LoopManager(this.sceneManager, this.renderManager, this.display);
@@ -54,6 +58,10 @@ public class PawStepEngine {
 		engine = new PawStepEngine(cfg);
 		return getEngine();
 		
+	}
+	
+	public static void registerComponentType(Class<? extends Component> clazz) {
+		getEngine().getComponentManager().registerComponentType(clazz);
 	}
 	
 }
