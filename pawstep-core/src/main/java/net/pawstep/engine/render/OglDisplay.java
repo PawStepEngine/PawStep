@@ -36,4 +36,8 @@ public class OglDisplay {
 		Display.destroy();
 	}
 	
+	public boolean isCloseRequested() {
+		return Display.isCloseRequested();
+	}
+	
 }

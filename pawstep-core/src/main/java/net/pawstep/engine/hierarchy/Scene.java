@@ -14,7 +14,7 @@ public class Scene implements EntityContainer, PhysicalObject {
 	private final SceneManager manager;
 	protected boolean activated = false;
 	
-	private List<Entity> entities;
+	private List<Entity> entities = new ArrayList<>();
 	
 	public Scene(SceneManager man) {
 		this.manager = man;

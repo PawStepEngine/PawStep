@@ -1,5 +1,7 @@
 package net.pawstep.engine.render;
 
+import net.pawstep.engine.hierarchy.Scene;
+
 public class RenderManager {
 	
 	private Camera mainCamera;
@@ -24,6 +26,17 @@ public class RenderManager {
 	 */
 	protected void setMainCamera(Camera cam) {
 		this.mainCamera = cam;
+	}
+	
+	/**
+	 * Renders the scene.
+	 */
+	public void renderScene() {
+		// TODO
+	}
+	
+	private Scene getScene() {
+		return this.getMainCamera().getScene();
 	}
 	
 }

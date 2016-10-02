@@ -8,7 +8,7 @@ public class SceneManager {
 	private LoopManager loopManager;
 	
 	public SceneManager() {
-		
+		this.activeScene = new Scene(this);
 	}
 	
 	public void activateScene() {

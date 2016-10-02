@@ -2,9 +2,9 @@ package net.pawstep.engine.loop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-import org.lwjgl.opengl.Display;
-
+import net.pawstep.engine.hierarchy.Component;
 import net.pawstep.engine.hierarchy.SceneManager;
 import net.pawstep.engine.render.OglDisplay;
 import net.pawstep.engine.render.RenderManager;
@@ -32,8 +32,10 @@ public class LoopManager {
 		
 		this.display.init();
 		
-		while (!this.terminateRequested) {
+		while (!this.terminateRequested || this.display.isCloseRequested()) {
+			
 			this.gameStep();
+			
 		}
 		
 		this.display.close();
@@ -42,10 +44,27 @@ public class LoopManager {
 	
 	private void gameStep() {
 		
-		// TODO
+		// First step.
+		this.forEachComponent(c -> {
+			if (c.isEnabled()) c.update();
+		});
 		
-		Display.update();
+		// Prerenders.
+		this.forEachComponent(c -> c.onPreRender());
+		this.renderManager.renderScene();
+		this.forEachComponent(c -> c.onPostRender());
 		
+		// Last step.
+		this.forEachComponent(c -> {
+			if (c.isEnabled()) c.lateUpdate();
+		});
+		
+		this.display.update();
+
+	}
+	
+	private void forEachComponent(Consumer<Component> callback) {
+		this.sceneManager.getActiveScene().forEachComponent(callback);
 	}
 	
 	/**
