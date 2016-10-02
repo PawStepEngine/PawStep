@@ -3,6 +3,7 @@ package net.pawstep.engine;
 import net.pawstep.engine.components.ComponentManager;
 import net.pawstep.engine.hierarchy.SceneManager;
 import net.pawstep.engine.loop.LoopManager;
+import net.pawstep.engine.render.OglDisplay;
 import net.pawstep.engine.render.RenderManager;
 
 public class PawStepEngine {
@@ -10,19 +11,21 @@ public class PawStepEngine {
 	protected static PawStepEngine engine;
 	
 	private ComponentManager componentManager;
+	private OglDisplay display;
 	
 	private SceneManager sceneManager;
 	private RenderManager renderManager;
 	private LoopManager loopManager;
 	
-	public PawStepEngine() {
+	public PawStepEngine(EngineConfig cfg) {
 		
 		this.componentManager = new ComponentManager();
+		this.display = new OglDisplay(cfg.getWindowWidth(), cfg.getWindowHeight());
 		
 		this.sceneManager = new SceneManager();
 		this.renderManager = new RenderManager();
 		
-		this.loopManager = new LoopManager(this.sceneManager, this.renderManager);
+		this.loopManager = new LoopManager(this.sceneManager, this.renderManager, this.display);
 		
 	}
 	
@@ -44,6 +47,13 @@ public class PawStepEngine {
 	
 	public static PawStepEngine getEngine() {
 		return engine;
+	}
+	
+	public static PawStepEngine init(EngineConfig cfg) {
+		
+		engine = new PawStepEngine(cfg);
+		return getEngine();
+		
 	}
 	
 }

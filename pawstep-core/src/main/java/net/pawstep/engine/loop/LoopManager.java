@@ -3,21 +3,56 @@ package net.pawstep.engine.loop;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.Display;
+
 import net.pawstep.engine.hierarchy.SceneManager;
+import net.pawstep.engine.render.OglDisplay;
 import net.pawstep.engine.render.RenderManager;
 
 public class LoopManager {
 	
 	private SceneManager sceneManager;
 	private RenderManager renderManager;
+	private OglDisplay display;
 	
 	private List<Runnable> postFrameActions = new ArrayList<>();
 	
-	public LoopManager(SceneManager sMan, RenderManager rMan) {
+	private volatile boolean terminateRequested;
+	
+	public LoopManager(SceneManager sMan, RenderManager rMan, OglDisplay disp) {
 		
 		this.sceneManager = sMan;
 		this.renderManager = rMan;
 		
+		this.display = disp;
+		
+	}
+	
+	public void startLoop() {
+		
+		this.display.init();
+		
+		while (!this.terminateRequested) {
+			this.gameStep();
+		}
+		
+		this.display.close();
+		
+	}
+	
+	private void gameStep() {
+		
+		// TODO
+		
+		Display.update();
+		
+	}
+	
+	/**
+	 * Terminates the game loop at the end of the next frame.
+	 */
+	public void terminate() {
+		this.terminateRequested = true;
 	}
 	
 	/**
