@@ -1,12 +1,13 @@
 package net.pawstep.engine.components;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.pawstep.engine.hierarchy.Component;
 
 public class ComponentManager {
 	
-	private Map<String, Class<? extends Component>> componentMappings;
+	private Map<String, Class<? extends Component>> componentMappings = new HashMap<>();
 	
 	/**
 	 * Registers the class specified as a type of component.  Must have an

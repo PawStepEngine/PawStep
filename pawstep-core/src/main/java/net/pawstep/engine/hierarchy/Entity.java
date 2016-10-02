@@ -3,6 +3,9 @@ package net.pawstep.engine.hierarchy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+
+import net.pawstep.engine.PawStepEngine;
 
 /**
  * The generic container class for behavior of these entities.
@@ -40,7 +43,7 @@ public class Entity implements EntityContainer, PhysicalObject {
 	 */
 	public <T extends Component> T addComponent(Class<T> component) {
 		
-		if (!this.hasComponent(component)) throw new IllegalArgumentException("Entity already has component of that type!");
+		if (this.hasComponent(component)) throw new IllegalArgumentException("Entity already has component of that type!");
 		
 		try {
 			
@@ -50,7 +53,11 @@ public class Entity implements EntityContainer, PhysicalObject {
 			comp.entity = this;
 			
 			// Now awaken it!
-			comp.awake();
+			try {
+				comp.awake();
+			} catch (Throwable t) {
+				PawStepEngine.getLogger().log(Level.WARNING, "Problem awakening component " + component.getName(), t);
+			}
 			
 			this.components.add(comp);
 			return comp;

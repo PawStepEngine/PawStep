@@ -1,5 +1,9 @@
 package net.pawstep.engine;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import net.pawstep.engine.components.ComponentManager;
 import net.pawstep.engine.hierarchy.Component;
 import net.pawstep.engine.hierarchy.SceneManager;
@@ -10,6 +14,8 @@ import net.pawstep.engine.render.RenderManager;
 public class PawStepEngine {
 	
 	protected static PawStepEngine engine;
+	protected static Logger logger = Logger.getLogger("PawStep");
+	private static List<Class<? extends Component>> queuedComponentRegistrations = new ArrayList<>();
 	
 	private ComponentManager componentManager;
 	private OglDisplay display;
@@ -56,12 +62,23 @@ public class PawStepEngine {
 	public static PawStepEngine init(EngineConfig cfg) {
 		
 		engine = new PawStepEngine(cfg);
+		queuedComponentRegistrations.forEach(c -> engine.getComponentManager().registerComponentType(c));
+		
 		return getEngine();
 		
 	}
 	
 	public static void registerComponentType(Class<? extends Component> clazz) {
-		getEngine().getComponentManager().registerComponentType(clazz);
+		queuedComponentRegistrations.add(clazz);
+	}
+	
+	/**
+	 * Gets the global engine logger.
+	 * 
+	 * @return The logger.
+	 */
+	public static Logger getLogger() {
+		return logger;
 	}
 	
 }

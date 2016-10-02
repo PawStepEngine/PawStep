@@ -16,7 +16,10 @@ public class Camera extends Component {
 
 	@Override
 	public void start() {
+		
+		PawStepEngine.getLogger().info("Camera registered self into render manager.");
 		this.renderManager.setMainCamera(this);
+		
 	}
 	
 	static {

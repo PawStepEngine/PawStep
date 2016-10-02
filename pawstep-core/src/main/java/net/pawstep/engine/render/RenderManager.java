@@ -50,14 +50,14 @@ public class RenderManager {
 		liveMatrix.store(fb);
 		GL11.glMultMatrix(fb);
 		
-		this.getScene().forEachChild(e -> {
+		/*this.getScene().forEachChild(e -> {
 			
 			/*
 			 * FIXME Change the depth-first thing to actually recursively push the matrix stack.
 			 * FIXME Change the depth-first thing to actually recursively push the matrix stack.
 			 * FIXME Change the depth-first thing to actually recursively push the matrix stack.
 			 * FIXME You're an idiot, Trey.
-			 */
+			 *
 			
 			// Transform the the coordinates of the model.
 			e.getTransform().applyToTransformationMatrix(liveMatrix);
@@ -74,7 +74,7 @@ public class RenderManager {
 			// Go back to the child things.
 			GL11.glPopMatrix();
 			
-		});
+		});*/
 		
 		// Go back into camera space.
 		GL11.glPopMatrix();

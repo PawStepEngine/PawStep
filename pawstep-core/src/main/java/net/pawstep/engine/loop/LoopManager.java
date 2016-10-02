@@ -52,7 +52,7 @@ public class LoopManager {
 		
 		// Prerenders.
 		this.forEachComponent(c -> c.onPreRender());
-		// TODO this.renderManager.renderScene();
+		this.renderManager.renderScene();
 		this.forEachComponent(c -> c.onPostRender());
 		
 		// Last step.
